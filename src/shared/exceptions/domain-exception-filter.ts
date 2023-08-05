@@ -4,7 +4,7 @@ import {
   ArgumentsHost,
   HttpStatus,
 } from '@nestjs/common';
-import { DomainException } from '@shared/exceptions/domain-exception';
+import { DomainException } from './domain-exception';
 import { Request, Response } from 'express';
 
 @Catch(DomainException)

@@ -20,8 +20,8 @@ import {
 
 import { FilterService } from './filter.service';
 
-// import { BadRequestError } from '../errors/BadRequestError';
-// import { UnprocessableEntityError } from '../errors/UnprocessableEntityError';
+import { BadRequestError } from '../../shared/errors/BadRequestError';
+import { UnprocessableEntityError } from '../../shared/errors/UnprocessableEntityError';
 import { FilterDto } from './dto/filter.dto';
 import { CreateFilterDto } from './dto/create-filter.dto';
 import { Filter } from './models/filter.model';
@@ -50,14 +50,14 @@ export class FilterController {
     summary: 'Creates a filter',
   })
   @ApiCreatedResponse({ description: 'Filter created.', type: FilterDto })
-  // @ApiBadRequestResponse({
-  //   description: 'The request object doesn`t match the expected one',
-  //   type: BadRequestError,
-  // })
-  // @ApiUnprocessableEntityResponse({
-  //   description: 'Validation errors while creating filter',
-  //   type: UnprocessableEntityError,
-  // })
+  @ApiBadRequestResponse({
+    description: 'The request object does not match the expected one',
+    type: BadRequestError,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'Validation errors while creating filter',
+    type: UnprocessableEntityError,
+  })
   async createFilter(
     @Body() createFilter: CreateFilterDto,
   ): Promise<FilterDto> {
@@ -79,14 +79,14 @@ export class FilterController {
     summary: 'Restore a filter',
   })
   @ApiCreatedResponse({ description: 'Filters Restored.', type: Filter })
-  // @ApiBadRequestResponse({
-  //   description: 'The request object doesn`t match the expected one',
-  //   type: BadRequestError,
-  // })
-  // @ApiUnprocessableEntityResponse({
-  //   description: 'Validation errors while creating question',
-  //   type: UnprocessableEntityError,
-  // })
+  @ApiBadRequestResponse({
+    description: 'The request object does not match the expected one',
+    type: BadRequestError,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'Validation errors while creating question',
+    type: UnprocessableEntityError,
+  })
   async restoreFilter(@Param('id') id: string) {
     return await this.filterService.restoreFilter(id);
   }
@@ -103,14 +103,14 @@ export class FilterController {
     summary: 'Archive a Filter',
   })
   @ApiCreatedResponse({ description: 'Filters archived.', type: Filter })
-  // @ApiBadRequestResponse({
-  //   description: 'The request object doesn`t match the expected one',
-  //   type: BadRequestError,
-  // })
-  // @ApiUnprocessableEntityResponse({
-  //   description: 'Validation errors while creating Filter',
-  //   type: UnprocessableEntityError,
-  // })
+  @ApiBadRequestResponse({
+    description: 'The request object does not match the expected one',
+    type: BadRequestError,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'Validation errors while creating Filter',
+    type: UnprocessableEntityError,
+  })
   async archiveFilter(@Param('id') id: string) {
     return await this.filterService.archiveFilter(id);
   }
