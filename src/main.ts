@@ -1,12 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { DomainExceptionFilter } from './shared/exceptions';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   setupSwagger(app);
+  app.useGlobalPipes(new ValidationPipe());
+
   app.useGlobalFilters(new DomainExceptionFilter());
   await app.listen(4343);
 }

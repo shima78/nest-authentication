@@ -30,7 +30,7 @@ import { Filter } from './models/filter.model';
 @Controller('filters')
 export class FilterController {
   constructor(
-    @Inject('FilterUseCase')
+    @Inject('FilterService')
     private readonly filterService: FilterService,
   ) {}
 

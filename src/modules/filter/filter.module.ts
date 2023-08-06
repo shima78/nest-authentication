@@ -24,7 +24,7 @@ import { Model } from 'mongoose';
       inject: [getModelToken(FilterSchema.name)],
     },
     {
-      provide: 'FilterUseCase',
+      provide: 'FilterService',
       useFactory: (repo: FilterRepository) => new FilterService(repo),
       inject: [FilterRepository],
     },
