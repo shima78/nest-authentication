@@ -6,11 +6,7 @@ import { BaseRepository } from '../../../shared/database/base.repository';
 import { UserDocument } from '../schema/user.schema';
 
 @Injectable()
-export class UserRepository extends BaseRepository<
-  UserDocument,
-  User,
-  string
-> {
+export class UserRepository extends BaseRepository<UserDocument, User, string> {
   constructor(protected model: Model<UserDocument>) {
     super(model);
   }
@@ -18,8 +14,8 @@ export class UserRepository extends BaseRepository<
     const { name, email, password } = plainObj;
     return new User(name, email, password);
   }
-  async findAll(): Promise<User[]> {
-    const result = await this.model.find().exec();
-    return result.map((doc) => doc.toObject());
+  async findByEmail(email) {
+    const result = await this.model.findOne({ email: email }).exec();
+    return result.toObject();
   }
 }

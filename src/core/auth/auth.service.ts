@@ -1,8 +1,15 @@
-import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserRepository } from './repository/user.repository';
 import * as bcrypt from 'bcryptjs';
 import { User } from './models/user.model';
 import { JwtService } from '@nestjs/jwt';
+import { EntityNotFoundException } from '../../shared/exceptions';
+import { Token } from './models/token.model';
 @Injectable()
 export class AuthService {
   constructor(
@@ -10,7 +17,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(user: User): Promise<{ token: string }> {
+  async signup(user: User): Promise<Token> {
     try {
       const hashedPassword = await bcrypt.hash(user.password, 10);
       user.setPassword(hashedPassword);
@@ -24,5 +31,14 @@ export class AuthService {
       }
       throw new InternalServerErrorException('User registration failed');
     }
+  }
+  async login(email: string, password: string): Promise<Token> {
+    const user = await this.repository.findByEmail(email);
+    if (!user) throw new EntityNotFoundException();
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatched)
+      throw new UnauthorizedException('Invalid email or password');
+    const token = this.jwtService.sign({ id: user._id });
+    return { token };
   }
 }
