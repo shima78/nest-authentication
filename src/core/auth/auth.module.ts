@@ -8,6 +8,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from './repository/user.repository';
 import { Model } from 'mongoose';
+import { JWTStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -37,7 +38,13 @@ import { Model } from 'mongoose';
         new AuthService(repo, jwtService),
       inject: [UserRepository, JwtService],
     },
+    {
+      provide: 'JWTStrategy',
+      useFactory: (repo: UserRepository) => new JWTStrategy(repo),
+      inject: [UserRepository],
+    },
   ],
+  exports: ['JWTStrategy', PassportModule],
   controllers: [AuthController],
 })
 export class AuthModule {}

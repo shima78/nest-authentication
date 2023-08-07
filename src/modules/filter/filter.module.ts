@@ -9,9 +9,11 @@ import {
   FilterSchema,
 } from './schema/filter.schema';
 import { Model } from 'mongoose';
+import { AuthModule } from '../../core/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     MongooseModule.forFeature([
       { name: FilterSchema.name, schema: FilterModel },
     ]),

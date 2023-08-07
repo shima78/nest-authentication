@@ -7,9 +7,11 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
@@ -25,6 +27,7 @@ import { UnprocessableEntityError } from '../../shared/errors/UnprocessableEntit
 import { FilterDto } from './dto/filter.dto';
 import { CreateFilterDto } from './dto/create-filter.dto';
 import { Filter } from './models/filter.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Filters')
 @Controller('filters')
@@ -45,7 +48,9 @@ export class FilterController {
     return filters.map((filter) => FilterDto.toViewModel(filter));
   }
 
+  @ApiBearerAuth()
   @Post('create')
+  @UseGuards(AuthGuard())
   @ApiOperation({
     summary: 'Creates a filter',
   })
